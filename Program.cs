@@ -6,7 +6,7 @@ namespace ServiceMock
     {
         public static void Main(string[] args)
         {
-            const string DATAFILE = "c:/test/data.json";
+            const string DATAFILE = "c:/temp/data.json";
 
             var builder = WebApplication.CreateBuilder(args);
 

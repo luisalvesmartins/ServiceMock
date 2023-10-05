@@ -1,7 +1,8 @@
 # ServiceMock
-Service Mock Storage Management API- small C# API project to store request and response pair and also missed requests
+Service Mock Storage Management API- small C# API project to store request and response pairs and also missed requests
 
 This project is to be used locally under your own security closed network.
+Implement the security protocols you feel the need.
 
 Can't be simpler than this.
 
