@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System.Web;
 
-namespace ServiceMock
+namespace SimpleCacheAPI
 {
     public class Program
     {

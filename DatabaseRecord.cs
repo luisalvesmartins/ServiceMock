@@ -1,4 +1,4 @@
-namespace ServiceMock
+namespace SimpleCacheAPI
 {
     public class DatabaseRecord
     {

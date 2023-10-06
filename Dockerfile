@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["ServiceMock.csproj", "."]
-RUN dotnet restore "./ServiceMock.csproj"
+COPY ["SimpleCacheAPI.csproj", "."]
+RUN dotnet restore "./SimpleCacheAPI.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "ServiceMock.csproj" -c Release -o /app/build
+RUN dotnet build "SimpleCacheAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ServiceMock.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "SimpleCacheAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ServiceMock.dll"]
+ENTRYPOINT ["dotnet", "SimpleCacheAPI.dll"]
