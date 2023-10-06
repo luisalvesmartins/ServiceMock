@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Web;
 
 namespace ServiceMock
 {
@@ -6,7 +7,7 @@ namespace ServiceMock
     {
         public static void Main(string[] args)
         {
-            const string DATAFILE = "c:/temp/data.json";
+            const string DATAFILE = "c:/auteput/servicecache.json";
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -36,9 +37,11 @@ namespace ServiceMock
                 return dbMissing;
             });
 
-            app.MapGet("/retrieve", (HttpContext httpContext) =>
+            app.MapPost("/retrieve",async (HttpContext httpContext) =>
             {
-                string req = httpContext.Request.Query["r"];
+                string res = await new StreamReader(httpContext.Request.Body).ReadToEndAsync();
+                //A rigid format of r= in the post
+                string req = res.Substring(2);
                 if (db.ContainsKey(req))
                 {
                     if (db[req].toProcess)
@@ -50,7 +53,8 @@ namespace ServiceMock
                     {
                         db[req].DateLastAccess = DateTime.Now;
                         save();
-                        return db[req].response;
+                        res = HttpUtility.UrlDecode(db[req].response);
+                        return res;
                     }
                 }
                 else
@@ -68,11 +72,16 @@ namespace ServiceMock
                     return "";
                 }
             });
+
             app.MapPost("/store", async (HttpContext httpContext) => 
             {
                 string req = httpContext.Request.Query["r"];
                 string res= await new StreamReader(httpContext.Request.Body).ReadToEndAsync();
-                DatabaseRecord dr=new DatabaseRecord() { 
+                string[] pars= res.Split("&");
+                //A rigid format of r=&s= in the post
+                req = pars[0].Substring(2);
+                res = pars[1].Substring( 2);
+                DatabaseRecord dr =new DatabaseRecord() { 
                     DateCreated= DateTime.Now, 
                     DateLastAccess= DateTime.Now,
                     response = res,

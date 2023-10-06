@@ -16,22 +16,24 @@ Can't be simpler than this.
 
 ## API:
 
-### /retrieve - GET
+### /retrieve - POST
 
-return the response for a given request
+return the response for a given key. If the key doesn't exist, store as missing data and return a 404.
 
 ``` 
-GET http://(hostname)/retrieve?r=value
+POST http://(hostname)/retrieve
+
+r=key
 ```
 
 ### /store - POST
 
-store the pair request/response
+store the pair request/response. if the request key exists, updates it.
 
 ``` 
-POST http://(hostname)/store?r=value
+POST http://(hostname)/store
 
-content
+r=value&c=content
 ```
 
 ### /missing - GET
@@ -41,3 +43,7 @@ returns all the missed requests for later fix. The fix is obtained by calling th
 ``` 
 GET http://(hostname)/missing
 ```
+
+## Client code
+
+TBD
