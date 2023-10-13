@@ -7,6 +7,7 @@ namespace SimpleCacheAPI
     {
         public static void Main(string[] args)
         {
+            //LOCATION OF THE CACHE. SHOULD BE IN APPSETTINGS.JSON
             const string DATAFILE = "c:/auteput/servicecache.json";
 
             var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,31 @@ namespace SimpleCacheAPI
 
             Dictionary<string,DatabaseRecord> db = new Dictionary<string,DatabaseRecord>();
             load();
+
+            app.MapGet("/status", (HttpContext httpContext) =>
+            {
+                return db.Count + " records";
+            });
+
+            app.MapGet("/reload", (HttpContext httpContext) =>
+            {
+                load();
+                return db.Count + " records";
+            });
+
+            app.MapGet("/missing/clean", (HttpContext httpContext) =>
+            {
+                int n = 0;
+                foreach (KeyValuePair<string, DatabaseRecord> item in db)
+                {
+                    if (item.Value.toProcess)
+                    {
+                        db.Remove(item.Key);
+                        n++;
+                    }
+                }
+                return n + " deleted";
+            });
 
             app.MapGet("/missing", (HttpContext httpContext) =>
             {
