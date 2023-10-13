@@ -44,6 +44,31 @@ returns all the missed requests for later fix. The fix is obtained by calling th
 GET http://(hostname)/missing
 ```
 
+### /status - GET
+
+displays the size of the cache.
+
+``` 
+GET http://(hostname)/status
+```
+
+### /reload - GET (should be POST)
+
+reloads the cache from file
+
+``` 
+GET http://(hostname)/reload
+```
+
+### /missing/clean - GET (should be DELETE)
+
+delete all the cached items that don't have a response. Handle with care.
+
+``` 
+GET http://(hostname)/missing/clean
+```
+
+
 ## Client code
 
 TBD
